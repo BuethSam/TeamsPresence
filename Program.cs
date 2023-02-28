@@ -229,21 +229,21 @@ namespace TeamsPresence
         private static void Service_StatusChanged(object sender, TeamsStatus status)
         {
             
-            HomeAssistantService.UpdateEntity(Config.StatusEntity, Config.FriendlyStatusNames[status], Config.FriendlyEntityNames[TeamsEntity.StatusEntity], "mdi:microsoft-teams");
+            HomeAssistantService.UpdateEntity(Config.StatusEntity, Config.FriendlyStatusNames[status], Config.FriendlyEntityNames[TeamsEntity.StatusEntity], "mdi:microsoft-teams", Config.FriendlyStatusNames.Values.ToArray());
 
             Console.WriteLine($"Updated status to {Config.FriendlyEntityNames[TeamsEntity.StatusEntity]} ({status})");
         }
 
         private static void Service_ActivityChanged(object sender, TeamsActivity activity)
         {
-            HomeAssistantService.UpdateEntity(Config.ActivityEntity, Config.FriendlyActivityNames[activity], Config.FriendlyEntityNames[TeamsEntity.ActivityEntity], Config.ActivityIcons[activity]);
+            HomeAssistantService.UpdateEntity(Config.ActivityEntity, Config.FriendlyActivityNames[activity], Config.FriendlyEntityNames[TeamsEntity.ActivityEntity], Config.ActivityIcons[activity], Config.FriendlyActivityNames.Values.ToArray());
 
             Console.WriteLine($"Updated activity to {Config.FriendlyEntityNames[TeamsEntity.ActivityEntity]} ({activity})");
         }
 
         private static void Camera_StatusChanged(object sender, CameraStatusChangedEventArgs args)
         {
-            HomeAssistantService.UpdateEntity(Config.CameraStatusEntity, Config.FriendlyCameraStatusNames[args.Status], Config.FriendlyEntityNames[TeamsEntity.CameraStatusEntity], Config.CameraStatusIcons[args.Status]);
+            HomeAssistantService.UpdateEntity(Config.CameraStatusEntity, Config.FriendlyCameraStatusNames[args.Status], Config.FriendlyEntityNames[TeamsEntity.CameraStatusEntity], Config.CameraStatusIcons[args.Status], Config.FriendlyCameraStatusNames.Values.ToArray());
 
             Console.WriteLine($"Updated camera status to {args.Status}");
 
