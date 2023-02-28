@@ -20,6 +20,7 @@ namespace TeamsPresence
         public int CameraStatusPollingRate { get; set; }
 
         public Dictionary<TeamsStatus, string> FriendlyStatusNames { get; set; }
+        public Dictionary<TeamsEntity, string> FriendlyEntityNames { get; set; }
         public Dictionary<TeamsActivity, string> FriendlyActivityNames { get; set; }
         public Dictionary<CameraStatus, string> FriendlyCameraStatusNames { get; set; }
 

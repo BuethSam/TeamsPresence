@@ -1,4 +1,4 @@
-using RestSharp;
+﻿using RestSharp;
 using RestSharp.Serializers.NewtonsoftJson;
 
 namespace TeamsPresence
@@ -19,14 +19,14 @@ namespace TeamsPresence
             Client.UseNewtonsoftJson();
         }
 
-        public void UpdateEntity(string entity, string state, string stateFriendlyName, string icon)
+        public void UpdateEntity(string entity, string state, string friendlyName, string icon)
         {
             var update = new HomeAssistantEntityStateUpdate()
             {
                 State = state,
                 Attributes = new HomeAssistantEntityStateUpdateAttributes()
                 {
-                    FriendlyName = stateFriendlyName,
+                    FriendlyName = friendlyName,
                     Icon = icon
                 }
             };

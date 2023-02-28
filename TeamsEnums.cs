@@ -7,6 +7,13 @@ using System.Threading.Tasks;
 
 namespace TeamsPresence
 {
+    public enum TeamsEntity
+    {
+        StatusEntity,
+        ActivityEntity,
+        CameraStatusEntity,
+        CameraAppEntity
+    }
     public enum TeamsStatus
     {
         Unknown,

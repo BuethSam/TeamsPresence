@@ -43,6 +43,27 @@ namespace TeamsPresence
                 try
                 {
                     Config = JsonConvert.DeserializeObject<TeamsPresenceConfig>(File.ReadAllText(configFilePath));
+                    if (Config.FriendlyEntityNames == null)
+                    {
+                        Config.FriendlyEntityNames = new Dictionary<TeamsEntity, string>()
+                        {
+                            { TeamsEntity.StatusEntity, "Teams Status" },
+                            { TeamsEntity.ActivityEntity, "Teams Activity" },
+                            { TeamsEntity.CameraStatusEntity, "Teams Camera Status" },
+                            { TeamsEntity.CameraAppEntity, "Teams Camera App" }
+                        };
+
+                        File.WriteAllText(configFilePath, JsonConvert.SerializeObject(Config, new JsonSerializerSettings()
+                        {
+                            Formatting = Formatting.Indented
+                        }));
+
+                        NotifyIcon.BalloonTipText = "Fixed config. Fill out and restart this application.";
+
+                        NotifyIcon.ShowBalloonTip(2000);
+
+                        OpenConfigDirectory();
+                    }
                 }
                 catch
                 {
@@ -69,6 +90,13 @@ namespace TeamsPresence
                     CameraAppEntity = "sensor.teams_presence_camera_app",
                     CameraStatusEntity = "sensor.teams_presence_camera_status",
                     CameraStatusPollingRate = 1000,
+                    FriendlyEntityNames = new Dictionary<TeamsEntity, string>()
+                    {
+                        { TeamsEntity.StatusEntity, "Teams Status" },
+                        { TeamsEntity.ActivityEntity, "Teams Activity" },
+                        { TeamsEntity.CameraStatusEntity, "Teams Camera Status" },
+                        { TeamsEntity.CameraAppEntity, "Teams Camera App" }
+                    },
                     FriendlyStatusNames = new Dictionary<TeamsStatus, string>()
                     {
                         { TeamsStatus.Available, "Available" },
@@ -200,25 +228,26 @@ namespace TeamsPresence
 
         private static void Service_StatusChanged(object sender, TeamsStatus status)
         {
-            HomeAssistantService.UpdateEntity(Config.StatusEntity, Config.FriendlyStatusNames[status], Config.FriendlyStatusNames[status], "mdi:microsoft-teams");
+            
+            HomeAssistantService.UpdateEntity(Config.StatusEntity, Config.FriendlyStatusNames[status], Config.FriendlyEntityNames[TeamsEntity.StatusEntity], "mdi:microsoft-teams");
 
-            Console.WriteLine($"Updated status to {Config.FriendlyStatusNames[status]} ({status})");
+            Console.WriteLine($"Updated status to {Config.FriendlyEntityNames[TeamsEntity.StatusEntity]} ({status})");
         }
 
         private static void Service_ActivityChanged(object sender, TeamsActivity activity)
         {
-            HomeAssistantService.UpdateEntity(Config.ActivityEntity, Config.FriendlyActivityNames[activity], Config.FriendlyActivityNames[activity], Config.ActivityIcons[activity]);
+            HomeAssistantService.UpdateEntity(Config.ActivityEntity, Config.FriendlyActivityNames[activity], Config.FriendlyEntityNames[TeamsEntity.ActivityEntity], Config.ActivityIcons[activity]);
 
-            Console.WriteLine($"Updated activity to {Config.FriendlyActivityNames[activity]} ({activity})");
+            Console.WriteLine($"Updated activity to {Config.FriendlyEntityNames[TeamsEntity.ActivityEntity]} ({activity})");
         }
 
         private static void Camera_StatusChanged(object sender, CameraStatusChangedEventArgs args)
         {
-            HomeAssistantService.UpdateEntity(Config.CameraStatusEntity, Config.FriendlyCameraStatusNames[args.Status], Config.FriendlyCameraStatusNames[args.Status], Config.CameraStatusIcons[args.Status]);
+            HomeAssistantService.UpdateEntity(Config.CameraStatusEntity, Config.FriendlyCameraStatusNames[args.Status], Config.FriendlyEntityNames[TeamsEntity.CameraStatusEntity], Config.CameraStatusIcons[args.Status]);
 
             Console.WriteLine($"Updated camera status to {args.Status}");
 
-            HomeAssistantService.UpdateEntity(Config.CameraAppEntity, args.AppName, args.AppName, Config.CameraAppIcon);
+            HomeAssistantService.UpdateEntity(Config.CameraAppEntity, args.AppName, Config.FriendlyEntityNames[TeamsEntity.CameraAppEntity], Config.CameraAppIcon);
 
             Console.WriteLine($"Updated camera app to {args.AppName}");
         }
