@@ -70,6 +70,18 @@ namespace TeamsPresence
                 }
             }
 
+            var nonPackaged = key.OpenSubKey("NonPackaged");
+
+            foreach (var app in nonPackaged.GetSubKeyNames())
+            {
+                var lastUsedTimeStop = Registry.CurrentUser.OpenSubKey($@"{SubKey}\NonPackaged\{app}")?.GetValue("LastUsedTimeStop");
+
+                if (lastUsedTimeStop != null && (long)lastUsedTimeStop == 0)
+                {
+                    return app.Substring(app.LastIndexOf('#') + 1);
+                }
+            }
+
             return "";
         }
     }
