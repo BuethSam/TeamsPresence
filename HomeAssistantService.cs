@@ -1,4 +1,4 @@
-﻿using RestSharp;
+using RestSharp;
 using RestSharp.Serializers.NewtonsoftJson;
 
 namespace TeamsPresence
@@ -31,7 +31,7 @@ namespace TeamsPresence
                 }
             };
 
-            var request = new RestRequest($"api/states/{entity}", Method.POST, DataFormat.Json);
+            var request = new RestRequest($"api/states/{entity}", Method.Post);
 
             request.AddJsonBody(update);
 
