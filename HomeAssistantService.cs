@@ -31,7 +31,7 @@ namespace TeamsPresence
                 }
             };
 
-            var request = new RestRequest($"api/states/{entity}", Method.Post);
+            var request = new RestRequest($"api/states/{entity}", Method.POST, DataFormat.Json);
 
             request.AddJsonBody(update);
 
